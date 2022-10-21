@@ -24,21 +24,24 @@ public class Comment extends Timestamped {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Long commentId;
 
-  @JoinColumn(name = "member_id", nullable = false)
+  @JoinColumn(name = "memberId", nullable = false)
   @ManyToOne(fetch = FetchType.LAZY)
   private Member member;
 
-  @JoinColumn(name = "post_id", nullable = false)
+  @JoinColumn(name = "reviewId", nullable = false)
   @ManyToOne(fetch = FetchType.LAZY)
-  private Post post;
+  private Review review;
 
   @Column(nullable = false)
-  private String content;
+  private String comment;
+
+  @Column(nullable = false)
+  private String memberName;
 
   public void update(CommentRequestDto commentRequestDto) {
-    this.content = commentRequestDto.getContent();
+    this.comment = commentRequestDto.getComment();
   }
 
   public boolean validateMember(Member member) {

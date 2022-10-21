@@ -4,7 +4,7 @@ import com.move.review.controller.response.ResponseDto;
 import com.move.review.controller.response.CommentResponseDto;
 import com.move.review.domain.Comment;
 import com.move.review.domain.Member;
-import com.move.review.domain.Post;
+import com.move.review.domain.Review;
 import com.move.review.controller.request.CommentRequestDto;
 import com.move.review.jwt.TokenProvider;
 import com.move.review.repository.CommentRepository;
@@ -24,7 +24,7 @@ public class CommentService {
   private final CommentRepository commentRepository;
 
   private final TokenProvider tokenProvider;
-  private final PostService postService;
+  private final ReviewService reviewService;
 
   @Transactional
   public ResponseDto<?> createComment(CommentRequestDto requestDto, HttpServletRequest request) {
@@ -43,22 +43,22 @@ public class CommentService {
       return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
     }
 
-    Post post = postService.isPresentPost(requestDto.getPostId());
-    if (null == post) {
+    Review review = reviewService.isPresentPost(requestDto.getReviewId());
+    if (null == review) {
       return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
     }
 
     Comment comment = Comment.builder()
         .member(member)
-        .post(post)
-        .content(requestDto.getContent())
+        .review(review)
+        .comment(requestDto.getComment())
         .build();
     commentRepository.save(comment);
     return ResponseDto.success(
         CommentResponseDto.builder()
-            .id(comment.getId())
-            .author(comment.getMember().getNickname())
-            .content(comment.getContent())
+            .commentId(comment.getCommentId())
+            .memberName(comment.getMember().getMemberName())
+            .comment(comment.getComment())
             .createdAt(comment.getCreatedAt())
             .modifiedAt(comment.getModifiedAt())
             .build()
@@ -67,20 +67,20 @@ public class CommentService {
 
   @Transactional(readOnly = true)
   public ResponseDto<?> getAllCommentsByPost(Long postId) {
-    Post post = postService.isPresentPost(postId);
-    if (null == post) {
+    Review review = reviewService.isPresentPost(postId);
+    if (null == review) {
       return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
     }
 
-    List<Comment> commentList = commentRepository.findAllByPost(post);
+    List<Comment> commentList = commentRepository.findAllByReview(review);
     List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
     for (Comment comment : commentList) {
       commentResponseDtoList.add(
           CommentResponseDto.builder()
-              .id(comment.getId())
-              .author(comment.getMember().getNickname())
-              .content(comment.getContent())
+              .commentId(comment.getCommentId())
+              .memberName(comment.getMember().getMemberName())
+              .comment(comment.getComment())
               .createdAt(comment.getCreatedAt())
               .modifiedAt(comment.getModifiedAt())
               .build()
@@ -106,8 +106,8 @@ public class CommentService {
       return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
     }
 
-    Post post = postService.isPresentPost(requestDto.getPostId());
-    if (null == post) {
+    Review review = reviewService.isPresentPost(requestDto.getReviewId());
+    if (null == review) {
       return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
     }
 
@@ -123,9 +123,9 @@ public class CommentService {
     comment.update(requestDto);
     return ResponseDto.success(
         CommentResponseDto.builder()
-            .id(comment.getId())
-            .author(comment.getMember().getNickname())
-            .content(comment.getContent())
+            .commentId(comment.getCommentId())
+            .memberName(comment.getMember().getMemberName())
+            .comment(comment.getComment())
             .createdAt(comment.getCreatedAt())
             .modifiedAt(comment.getModifiedAt())
             .build()

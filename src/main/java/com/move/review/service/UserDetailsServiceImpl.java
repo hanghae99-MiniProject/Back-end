@@ -1,6 +1,7 @@
 package com.move.review.service;
 
 import com.move.review.domain.Member;
+import com.move.review.domain.UserDetailsImpl;
 import com.move.review.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   private final MemberRepository memberRepository;
 
   @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return (UserDetails) new Member(); // 이 부분을 지우고 기능을 구현해주세요:)
+  public UserDetails loadUserByUsername(String memberName) throws UsernameNotFoundException {
+    Member member = memberRepository.findByMemberName(memberName)
+            .orElseThrow(() -> new UsernameNotFoundException("Can't find " + memberName));
+
+    return new UserDetailsImpl(member);
   }
 }
