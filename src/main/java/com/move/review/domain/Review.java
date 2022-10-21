@@ -1,6 +1,6 @@
 package com.move.review.domain;
 
-import com.move.review.controller.request.PostRequestDto;
+import com.move.review.controller.request.ReviewRequestDto;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,28 +23,43 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Post extends Timestamped {
+public class Review extends Timestamped {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Long reviewId;
+
+  @JoinColumn(name = "memberID", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Member member;
 
   @Column(nullable = false)
-  private String title;
+  private String image;
 
   @Column(nullable = false)
-  private String content;
+  private String movieTitle; // 영화제목
+
+  @Column(nullable = false)
+  private String actor; // 배우
+
+  @Column(nullable = false)
+  private String rating; // 별점
+
+  @Column(nullable = false)
+  private String reviewTitle;
+
+  @Column(nullable = false)
+  private String reviewContent;
+
+  @Column(nullable = false)
+  private String memberName;
 
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> comments;
 
-  @JoinColumn(name = "member_id", nullable = false)
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Member member;
-
-  public void update(PostRequestDto postRequestDto) {
-    this.title = postRequestDto.getTitle();
-    this.content = postRequestDto.getContent();
+  public void update(ReviewRequestDto reviewRequestDto) {
+    this.reviewTitle = reviewRequestDto.getReviewTitle();
+    this.reviewContent = reviewRequestDto.getReviewContent();
   }
 
   public boolean validateMember(Member member) {

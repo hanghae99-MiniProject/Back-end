@@ -12,9 +12,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MemberRequestDto {
 
-  private String nickname;
+  @NotBlank
+  private String memberName;
 
+  @NotBlank
   private String password;
 
+  @NotBlank
   private String passwordConfirm;
 }

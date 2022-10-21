@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostRequestDto {
-  private String title;
-  private String content;
+public class ReviewRequestDto {
+  private String reviewTitle;
+  private String reviewContent;
 }

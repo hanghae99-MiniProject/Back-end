@@ -11,11 +11,15 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostResponseDto {
-  private Long id;
-  private String title;
-  private String content;
-  private String author;
+public class ReviewResponseDto {
+  private Long reviewId;
+  private String image;
+  private String movieTitle;
+  private String actor;
+  private String rating;
+  private String reviewTitle;
+  private String reviewContent;
+  private String memberName;
   private List<CommentResponseDto> commentResponseDtoList;
   private LocalDateTime createdAt;
   private LocalDateTime modifiedAt;
