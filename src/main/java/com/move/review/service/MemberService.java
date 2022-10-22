@@ -1,5 +1,6 @@
 package com.move.review.service;
 
+import com.move.review.controller.request.IdCheckRequestDto;
 import com.move.review.controller.response.MemberResponseDto;
 import com.move.review.domain.Member;
 import com.move.review.controller.request.LoginRequestDto;
@@ -28,10 +29,6 @@ public class MemberService {
 
   @Transactional
   public ResponseDto<?> createMember(MemberRequestDto requestDto) {
-    if (null != isPresentMember(requestDto.getMemberName())) {
-      return ResponseDto.fail("DUPLICATED_NICKNAME",
-          "중복된 닉네임 입니다.");
-    }
 
     if (!requestDto.getPassword().equals(requestDto.getPasswordConfirm())) {
       return ResponseDto.fail("PASSWORDS_NOT_MATCHED",
@@ -43,14 +40,7 @@ public class MemberService {
                 .password(passwordEncoder.encode(requestDto.getPassword()))
                     .build();
     memberRepository.save(member);
-    return ResponseDto.success(
-        MemberResponseDto.builder()
-            .memberId(member.getMemberId())
-            .memberName(member.getMemberName())
-            .createdAt(member.getCreatedAt())
-            .modifiedAt(member.getModifiedAt())
-            .build()
-    );
+    return ResponseDto.success("회원가입 성공");
   }
 
   @Transactional
@@ -70,10 +60,7 @@ public class MemberService {
 
     return ResponseDto.success(
         MemberResponseDto.builder()
-            .memberId(member.getMemberId())
             .memberName(member.getMemberName())
-            .createdAt(member.getCreatedAt())
-            .modifiedAt(member.getModifiedAt())
             .build()
     );
   }
@@ -89,7 +76,9 @@ public class MemberService {
           "사용자를 찾을 수 없습니다.");
     }
 
-    return tokenProvider.deleteRefreshToken(member);
+    tokenProvider.deleteRefreshToken(member);
+
+    return ResponseDto.success("로그아웃 성공");
   }
 
   @Transactional(readOnly = true)
@@ -104,4 +93,12 @@ public class MemberService {
     response.addHeader("Access-Token-Expire-Time", tokenDto.getAccessTokenExpiresIn().toString());
   }
 
+    public ResponseDto<?> idCheck(IdCheckRequestDto requestDto) {
+      if (null != isPresentMember(requestDto.getMemberName())) {
+        return ResponseDto.fail("DUPLICATED_NICKNAME",
+                "중복된 아이디가 있습니다.");
+      }
+
+      return ResponseDto.success("사용가능한 아이디 입니다.");
+    }
 }

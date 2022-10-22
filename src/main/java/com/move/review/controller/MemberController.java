@@ -1,5 +1,6 @@
 package com.move.review.controller;
 
+import com.move.review.controller.request.IdCheckRequestDto;
 import com.move.review.controller.request.LoginRequestDto;
 import com.move.review.controller.request.MemberRequestDto;
 import com.move.review.controller.response.ResponseDto;
@@ -26,6 +27,11 @@ public class MemberController {
       HttpServletResponse response
   ) {
     return memberService.login(requestDto, response);
+  }
+
+  @PostMapping(value = "/api/member/id-check")
+  public ResponseDto<?> idCheck(@RequestBody IdCheckRequestDto requestDto){
+    return memberService.idCheck(requestDto);
   }
 
   @PostMapping(value = "/api/auth/member/logout")

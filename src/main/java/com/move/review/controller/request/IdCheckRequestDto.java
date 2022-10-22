@@ -1,17 +1,13 @@
-package com.move.review.controller.response;
-
+package com.move.review.controller.request;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberResponseDto {
 
-  private String memberName;
-
+public class IdCheckRequestDto {
+    private String memberName;
 }
