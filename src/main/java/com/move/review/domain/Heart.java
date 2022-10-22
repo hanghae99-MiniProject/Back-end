@@ -17,12 +17,11 @@ public class Heart {
     private Long heartId;
 
     @ManyToOne
-    @JoinColumn(name="userId")
+    @JoinColumn(name="memberId")
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name="postId")
+    @JoinColumn(name="reviewId")
     private Review review;
-
 
 }
