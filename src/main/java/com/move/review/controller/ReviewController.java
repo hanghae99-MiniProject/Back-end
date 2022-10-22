@@ -24,32 +24,70 @@ public class ReviewController {
                   paramType = "header"
           )
   })
-  @PostMapping(value = "/api/auth/post")
-  public ResponseDto<?> createPost(@RequestBody ReviewRequestDto requestDto,
-                                   HttpServletRequest request) {
-    return reviewService.createPost(requestDto, request);
+
+  //Review 생성
+  @PostMapping(value = "/api/reviews")
+  public ResponseDto<?> createReview(@RequestBody ReviewRequestDto requestDto,
+                                     HttpServletRequest request) {
+    return reviewService.createReview(requestDto, request);
   }
 
-  @GetMapping(value = "/api/post/{id}")
-  public ResponseDto<?> getPost(@PathVariable Long id) {
-    return reviewService.getPost(id);
+  @ApiImplicitParams({
+          @ApiImplicitParam(
+                  name = "Refresh-Token",
+                  required = true,
+                  dataType = "string",
+                  paramType = "header"
+          )
+  })
+  //전체 Review 조회
+  @GetMapping(value = "/api/reviews")
+  public ResponseDto<?> getAllReview() {
+    return reviewService.getAllReview();
   }
 
-  @GetMapping(value = "/api/post")
-  public ResponseDto<?> getAllPosts() {
-    return reviewService.getAllPost();
+  @ApiImplicitParams({
+          @ApiImplicitParam(
+                  name = "Refresh-Token",
+                  required = true,
+                  dataType = "string",
+                  paramType = "header"
+          )
+  })
+  //Review 상세 조회
+  @GetMapping(value = "/api/reviews/{reviewId}")
+  public ResponseDto<?> getReview(@PathVariable Long id) {
+    return reviewService.getReview(id);
   }
 
-  @PutMapping(value = "/api/auth/post/{id}")
-  public ResponseDto<?> updatePost(@PathVariable Long id, @RequestBody ReviewRequestDto reviewRequestDto,
+  @ApiImplicitParams({
+          @ApiImplicitParam(
+                  name = "Refresh-Token",
+                  required = true,
+                  dataType = "string",
+                  paramType = "header"
+          )
+  })
+  //Review 업데이트
+  @PutMapping(value = "/api/reviews/{reviewId}")
+  public ResponseDto<?> updateReview(@PathVariable Long id, @RequestBody ReviewRequestDto reviewRequestDto,
       HttpServletRequest request) {
-    return reviewService.updatePost(id, reviewRequestDto, request);
+    return reviewService.updateReview(id, reviewRequestDto, request);
   }
 
-  @DeleteMapping(value = "/api/auth/post/{id}")
-  public ResponseDto<?> deletePost(@PathVariable Long id,
+  @ApiImplicitParams({
+          @ApiImplicitParam(
+                  name = "Refresh-Token",
+                  required = true,
+                  dataType = "string",
+                  paramType = "header"
+          )
+  })
+  //Review 삭제
+  @DeleteMapping(value = "/api/reviews/{reviewId}")
+  public ResponseDto<?> deleteReview(@PathVariable Long id,
       HttpServletRequest request) {
-    return reviewService.deletePost(id, request);
+    return reviewService.deleteReview(id, request);
   }
 
 }
