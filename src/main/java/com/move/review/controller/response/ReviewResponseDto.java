@@ -15,8 +15,8 @@ public class ReviewResponseDto {
   private Long reviewId;
   private String image;
   private String movieTitle;
-  private String actor;
-  private String rating;
+  private String genre;
+  private int rating;
   private String reviewTitle;
   private String reviewContent;
   private String memberName;

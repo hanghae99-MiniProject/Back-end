@@ -29,31 +29,39 @@ public class Review extends Timestamped {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long reviewId;
 
-  @JoinColumn(name = "memberID", nullable = false)
+  @JoinColumn(name = "memberId", nullable = false)
   @ManyToOne(fetch = FetchType.LAZY)
   private Member member;
 
+  // 영화 포스터
   @Column(nullable = false)
   private String image;
 
+  // 영화 제목
   @Column(nullable = false)
-  private String movieTitle; // 영화제목
+  private String movieTitle;
 
+  // 장르
   @Column(nullable = false)
-  private String actor; // 배우
+  private String genre;
 
+  // 별점
   @Column(nullable = false)
-  private String rating; // 별점
+  private int rating;
 
+  // 리뷰 제목
   @Column(nullable = false)
   private String reviewTitle;
 
+  // 리뷰 내용
   @Column(nullable = false)
   private String reviewContent;
 
+  // 작성자
   @Column(nullable = false)
   private String memberName;
 
+  // 댓글
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> comments;
 

@@ -28,8 +28,9 @@ public class ReviewService {
 
   private final TokenProvider tokenProvider;
 
+  // Review 생성
   @Transactional
-  public ResponseDto<?> createPost(ReviewRequestDto requestDto, HttpServletRequest request) {
+  public ResponseDto<?> createReview(ReviewRequestDto requestDto, HttpServletRequest request) {
     if (null == request.getHeader("Refresh-Token")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
           "로그인이 필요합니다.");
@@ -45,26 +46,30 @@ public class ReviewService {
       return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
     }
 
+    // 리뷰 저장
     Review review = Review.builder()
-        .reviewTitle(requestDto.getReviewTitle())
-        .reviewContent(requestDto.getReviewContent())
-        .member(member)
-        .build();
+            .image(requestDto.getImage())
+            .movieTitle(requestDto.getMovieTitle())
+            .genre(requestDto.getGenre())
+            .rating(requestDto.getRating())
+            .reviewTitle(requestDto.getReviewTitle())
+            .reviewContent(requestDto.getReviewContent())
+            .memberName(requestDto.getMemberName())
+            .build();
     reviewRepository.save(review);
-    return ResponseDto.success(
-        ReviewResponseDto.builder()
-            .reviewId(review.getReviewId())
-            .reviewTitle(review.getReviewTitle())
-            .reviewContent(review.getReviewContent())
-            .memberName(review.getMember().getMemberName())
-            .createdAt(review.getCreatedAt())
-            .modifiedAt(review.getModifiedAt())
-            .build()
-    );
+
+    return ResponseDto.success("생성 성공");
   }
 
+  //전체 Review 조회
   @Transactional(readOnly = true)
-  public ResponseDto<?> getPost(Long id) {
+  public ResponseDto<?> getAllReview() {
+    return ResponseDto.success(reviewRepository.findAllByOrderByModifiedAtDesc());
+  }
+
+  //Review 세부 조회
+  @Transactional(readOnly = true)
+  public ResponseDto<?> getReview(Long id) {
     Review review = isPresentPost(id);
     if (null == review) {
       return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
@@ -98,13 +103,10 @@ public class ReviewService {
     );
   }
 
-  @Transactional(readOnly = true)
-  public ResponseDto<?> getAllPost() {
-    return ResponseDto.success(reviewRepository.findAllByOrderByModifiedAtDesc());
-  }
 
+  //Review 업데이트
   @Transactional
-  public ResponseDto<Review> updatePost(Long id, ReviewRequestDto requestDto, HttpServletRequest request) {
+  public ResponseDto<Review> updateReview(Long id, ReviewRequestDto requestDto, HttpServletRequest request) {
     if (null == request.getHeader("Refresh-Token")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
           "로그인이 필요합니다.");
@@ -133,8 +135,9 @@ public class ReviewService {
     return ResponseDto.success(review);
   }
 
+  //Review 삭제
   @Transactional
-  public ResponseDto<?> deletePost(Long id, HttpServletRequest request) {
+  public ResponseDto<?> deleteReview(Long id, HttpServletRequest request) {
     if (null == request.getHeader("Refresh-Token")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
           "로그인이 필요합니다.");
@@ -160,7 +163,7 @@ public class ReviewService {
     }
 
     reviewRepository.delete(review);
-    return ResponseDto.success("delete success");
+    return ResponseDto.success("삭제 성공");
   }
 
   @Transactional(readOnly = true)
