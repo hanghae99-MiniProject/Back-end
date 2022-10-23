@@ -54,10 +54,11 @@ public class ReviewController {
                   paramType = "header"
           )
   })
+
   //Review 상세 조회
   @GetMapping(value = "/api/reviews/{reviewId}")
-  public ResponseDto<?> getReview(@PathVariable Long id) {
-    return reviewService.getReview(id);
+  public ResponseDto<?> getReview(@PathVariable Long reviewId) {
+    return reviewService.getReview(reviewId);
   }
 
   @ApiImplicitParams({
@@ -68,6 +69,7 @@ public class ReviewController {
                   paramType = "header"
           )
   })
+
   //Review 업데이트
   @PutMapping(value = "/api/reviews/{reviewId}")
   public ResponseDto<?> updateReview(@PathVariable Long id, @RequestBody ReviewRequestDto reviewRequestDto,
@@ -83,6 +85,7 @@ public class ReviewController {
                   paramType = "header"
           )
   })
+
   //Review 삭제
   @DeleteMapping(value = "/api/reviews/{reviewId}")
   public ResponseDto<?> deleteReview(@PathVariable Long id,

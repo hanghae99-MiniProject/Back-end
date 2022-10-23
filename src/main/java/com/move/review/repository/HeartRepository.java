@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface HeartRepository extends JpaRepository<Heart, Long> {
     Optional<Heart> findByMemberAndReview(Member member, Review review);
+    int countByReview(Review review);
 }
