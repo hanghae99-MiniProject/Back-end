@@ -14,5 +14,4 @@ public class ReviewRequestDto {
   private int rating;
   private String reviewTitle;
   private String reviewContent;
-  private String memberName;
 }
