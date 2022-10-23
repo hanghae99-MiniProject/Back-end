@@ -54,7 +54,8 @@ public class ReviewService {
             .rating(requestDto.getRating())
             .reviewTitle(requestDto.getReviewTitle())
             .reviewContent(requestDto.getReviewContent())
-            .memberName(requestDto.getMemberName())
+            .memberName(member.getMemberName())
+            .member(member)
             .build();
     reviewRepository.save(review);
 
