@@ -33,12 +33,12 @@ public class ReviewService {
   public ResponseDto<?> createReview(ReviewRequestDto requestDto, HttpServletRequest request) {
     if (null == request.getHeader("Refresh-Token")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
-          "로그인이 필요합니다.");
+              "로그인이 필요합니다.");
     }
 
     if (null == request.getHeader("Authorization")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
-          "로그인이 필요합니다.");
+              "로그인이 필요합니다.");
     }
 
     Member member = validateMember(request);
@@ -54,7 +54,8 @@ public class ReviewService {
             .rating(requestDto.getRating())
             .reviewTitle(requestDto.getReviewTitle())
             .reviewContent(requestDto.getReviewContent())
-            .memberName(requestDto.getMemberName())
+            .memberName(member.getMemberName())
+            .member(member)
             .build();
     reviewRepository.save(review);
 
@@ -80,26 +81,26 @@ public class ReviewService {
 
     for (Comment comment : commentList) {
       commentResponseDtoList.add(
-          CommentResponseDto.builder()
-              .commentId(comment.getCommentId())
-              .memberName(comment.getMember().getMemberName())
-              .comment(comment.getComment())
-              .createdAt(comment.getCreatedAt())
-              .modifiedAt(comment.getModifiedAt())
-              .build()
+              CommentResponseDto.builder()
+                      .commentId(comment.getCommentId())
+                      .memberName(comment.getMember().getMemberName())
+                      .comment(comment.getComment())
+                      .createdAt(comment.getCreatedAt())
+                      .modifiedAt(comment.getModifiedAt())
+                      .build()
       );
     }
 
     return ResponseDto.success(
-        ReviewResponseDto.builder()
-            .reviewId(review.getReviewId())
-            .reviewTitle(review.getReviewTitle())
-            .reviewContent(review.getReviewContent())
-            .commentResponseDtoList(commentResponseDtoList)
-            .memberName(review.getMember().getMemberName())
-            .createdAt(review.getCreatedAt())
-            .modifiedAt(review.getModifiedAt())
-            .build()
+            ReviewResponseDto.builder()
+                    .reviewId(review.getReviewId())
+                    .reviewTitle(review.getReviewTitle())
+                    .reviewContent(review.getReviewContent())
+                    .commentResponseDtoList(commentResponseDtoList)
+                    .memberName(review.getMember().getMemberName())
+                    .createdAt(review.getCreatedAt())
+                    .modifiedAt(review.getModifiedAt())
+                    .build()
     );
   }
 
@@ -109,12 +110,12 @@ public class ReviewService {
   public ResponseDto<Review> updateReview(Long id, ReviewRequestDto requestDto, HttpServletRequest request) {
     if (null == request.getHeader("Refresh-Token")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
-          "로그인이 필요합니다.");
+              "로그인이 필요합니다.");
     }
 
     if (null == request.getHeader("Authorization")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
-          "로그인이 필요합니다.");
+              "로그인이 필요합니다.");
     }
 
     Member member = validateMember(request);
@@ -140,12 +141,12 @@ public class ReviewService {
   public ResponseDto<?> deleteReview(Long id, HttpServletRequest request) {
     if (null == request.getHeader("Refresh-Token")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
-          "로그인이 필요합니다.");
+              "로그인이 필요합니다.");
     }
 
     if (null == request.getHeader("Authorization")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
-          "로그인이 필요합니다.");
+              "로그인이 필요합니다.");
     }
 
     Member member = validateMember(request);
