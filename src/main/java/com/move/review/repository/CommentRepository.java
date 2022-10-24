@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
   List<Comment> findAllByReview(Review review);
-  int countByReview(Review review);
+  Long countByReview(Review review);
 }
