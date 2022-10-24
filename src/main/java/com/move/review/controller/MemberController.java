@@ -1,5 +1,6 @@
 package com.move.review.controller;
 
+import com.move.review.configuration.SwaggerAnnotation;
 import com.move.review.controller.request.IdCheckRequestDto;
 import com.move.review.controller.request.LoginRequestDto;
 import com.move.review.controller.request.MemberRequestDto;
@@ -34,6 +35,7 @@ public class MemberController {
     return memberService.idCheck(requestDto);
   }
 
+  @SwaggerAnnotation
   @PostMapping(value = "/api/member/logout")
   public ResponseDto<?> logout(HttpServletRequest request) {
     return memberService.logout(request);
