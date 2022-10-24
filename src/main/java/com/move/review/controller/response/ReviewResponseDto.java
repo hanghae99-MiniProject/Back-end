@@ -22,5 +22,6 @@ public class ReviewResponseDto {
   private String memberName;
   private Long heartNum;
   private Long commentNum;
+  private boolean heartYn = false;
   private List<CommentResponseDto> commentResponseDtoList;
 }
