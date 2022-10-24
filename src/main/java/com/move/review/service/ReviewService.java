@@ -25,9 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ReviewService {
 
+
     private final ReviewRepository reviewRepository;
     private final CommentRepository commentRepository;
-    private final HeartRepository heartRepository;
+
     private final TokenProvider tokenProvider;
 
     // Review 생성
@@ -56,7 +57,8 @@ public class ReviewService {
                 .rating(requestDto.getRating())
                 .reviewTitle(requestDto.getReviewTitle())
                 .reviewContent(requestDto.getReviewContent())
-                .memberName(requestDto.getMemberName())
+                .memberName(member.getMemberName())
+                .member(member)
                 .build();
         reviewRepository.save(review);
 
@@ -71,19 +73,14 @@ public class ReviewService {
 
     //Review 세부 조회
     @Transactional(readOnly = true)
-    public ResponseDto<?> getReview(Long reviewId) {
-        Review review = isPresentPost(reviewId);
+    public ResponseDto<?> getReview(Long id) {
+        Review review = isPresentPost(id);
         if (null == review) {
             return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
         }
 
-        // 댓글 목록
         List<Comment> commentList = commentRepository.findAllByReview(review);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
-        // 좋아요 갯수
-        int heartsCount = heartRepository.countByReview(review);
-        // 댓글 갯수
-        int commentsCount = commentRepository.countByReview(review);
 
         for (Comment comment : commentList) {
             commentResponseDtoList.add(
@@ -91,26 +88,25 @@ public class ReviewService {
                             .commentId(comment.getCommentId())
                             .memberName(comment.getMember().getMemberName())
                             .comment(comment.getComment())
+                            .createdAt(comment.getCreatedAt())
+                            .modifiedAt(comment.getModifiedAt())
                             .build()
             );
         }
 
-        ReviewResponseDto reviewList = ReviewResponseDto.builder()
-                .reviewId(review.getReviewId())
-                .image(review.getImage())
-                .movieTitle(review.getMovieTitle())
-                .genre(review.getGenre())
-                .rating(review.getRating())
-                .reviewTitle(review.getReviewTitle())
-                .reviewContent(review.getReviewContent())
-                .memberName(review.getMember().getMemberName())
-                .heartsCount(heartsCount)
-                .commentsCount(commentsCount)
-                .commentResponseDtoList(commentResponseDtoList)
-                .build();
-
-        return ResponseDto.success(reviewList);
+        return ResponseDto.success(
+                ReviewResponseDto.builder()
+                        .reviewId(review.getReviewId())
+                        .reviewTitle(review.getReviewTitle())
+                        .reviewContent(review.getReviewContent())
+                        .commentResponseDtoList(commentResponseDtoList)
+                        .memberName(review.getMember().getMemberName())
+                        .createdAt(review.getCreatedAt())
+                        .modifiedAt(review.getModifiedAt())
+                        .build()
+        );
     }
+
 
     //Review 업데이트
     @Transactional
@@ -183,9 +179,7 @@ public class ReviewService {
     @Transactional
     public Member validateMember(HttpServletRequest request) {
         if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
-            return null;
+            return null;}
+            return tokenProvider.getMemberFromAuthentication();
         }
-        return tokenProvider.getMemberFromAuthentication();
     }
-
-}
