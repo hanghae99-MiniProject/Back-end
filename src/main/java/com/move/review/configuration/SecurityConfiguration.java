@@ -55,7 +55,9 @@ public class SecurityConfiguration {
 
         .and()
         .authorizeRequests()
-        .antMatchers("/api/member/**").permitAll()
+        .antMatchers("/api/member/signup",
+                "/api/member/login",
+                "/api/member/id-check").permitAll()
         .antMatchers("/api/post/**").permitAll()
         .antMatchers("/api/comment/**").permitAll()
         .antMatchers( "/v2/api-docs",
