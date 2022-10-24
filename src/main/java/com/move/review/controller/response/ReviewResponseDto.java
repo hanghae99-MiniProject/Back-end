@@ -20,6 +20,8 @@ public class ReviewResponseDto {
   private String reviewTitle;
   private String reviewContent;
   private String memberName;
+  private int heartsCount;
+  private int commentsCount;
   private List<CommentResponseDto> commentResponseDtoList;
   private LocalDateTime createdAt;
   private LocalDateTime modifiedAt;
