@@ -23,6 +23,4 @@ public class ReviewResponseDto {
   private Long heartNum;
   private Long commentNum;
   private List<CommentResponseDto> commentResponseDtoList;
-  private LocalDateTime createdAt;
-  private LocalDateTime modifiedAt;
 }
