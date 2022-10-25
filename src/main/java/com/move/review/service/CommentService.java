@@ -29,8 +29,18 @@ public class CommentService {
 
     // 댓글 작성
     @Transactional
-    public ResponseDto<?> createComment(CommentRequestDto requestDto, UserDetailsImpl userDetails) {
-        Member member = userDetails.getMember();
+    public ResponseDto<?> createComment(CommentRequestDto requestDto, HttpServletRequest request) {
+        if (null == request.getHeader("Refresh-Token")) {
+            return ResponseDto.fail("MEMBER_NOT_FOUND",
+                    "로그인이 필요합니다.");
+        }
+
+        if (null == request.getHeader("Authorization")) {
+            return ResponseDto.fail("MEMBER_NOT_FOUND",
+                    "로그인이 필요합니다.");
+        }
+
+        Member member = validateMember(request);
         if (null == member) {
             return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
         }
@@ -52,8 +62,6 @@ public class CommentService {
                 .commentId(comment.getCommentId())
                 .memberName(comment.getMember().getMemberName())
                 .comment(comment.getComment())
-//            .createdAt(comment.getCreatedAt())
-//            .modifiedAt(comment.getModifiedAt())
                 .build();
 
         return ResponseDto.success(commentList);
@@ -61,8 +69,18 @@ public class CommentService {
 
     // 댓글 수정
     @Transactional
-    public ResponseDto<?> updateComment(Long commentId, CommentRequestDto requestDto, UserDetailsImpl userDetails) {
-        Member member = userDetails.getMember();
+    public ResponseDto<?> updateComment(Long commentId, CommentRequestDto requestDto, HttpServletRequest request) {
+        if (null == request.getHeader("Refresh-Token")) {
+            return ResponseDto.fail("MEMBER_NOT_FOUND",
+                    "로그인이 필요합니다.");
+        }
+
+        if (null == request.getHeader("Authorization")) {
+            return ResponseDto.fail("MEMBER_NOT_FOUND",
+                    "로그인이 필요합니다.");
+        }
+
+        Member member = validateMember(request);
         if (null == member) {
             return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
         }
@@ -86,8 +104,6 @@ public class CommentService {
                 .commentId(comment.getCommentId())
                 .memberName(comment.getMember().getMemberName())
                 .comment(comment.getComment())
-//            .createdAt(comment.getCreatedAt())
-//            .modifiedAt(comment.getModifiedAt())
                 .build();
 
         return ResponseDto.success(commentList);
@@ -95,8 +111,18 @@ public class CommentService {
 
     // 댓글 삭제
     @Transactional
-    public ResponseDto<?> deleteComment(Long commentId, UserDetailsImpl userDetails) {
-        Member member = userDetails.getMember();
+    public ResponseDto<?> deleteComment(Long commentId, HttpServletRequest request) {
+        if (null == request.getHeader("Refresh-Token")) {
+            return ResponseDto.fail("MEMBER_NOT_FOUND",
+                    "로그인이 필요합니다.");
+        }
+
+        if (null == request.getHeader("Authorization")) {
+            return ResponseDto.fail("MEMBER_NOT_FOUND",
+                    "로그인이 필요합니다.");
+        }
+
+        Member member = validateMember(request);
         if (null == member) {
             return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
         }

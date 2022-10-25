@@ -20,6 +20,7 @@ public class ReviewController {
   private final ReviewService reviewService;
 
   //Review 생성
+
   @SwaggerAnnotation
   @PostMapping(value = "/api/reviews")
   public ResponseDto<?> createReview(@RequestBody ReviewRequestDto requestDto,
@@ -43,6 +44,7 @@ public class ReviewController {
 
   //Review 업데이트
   @SwaggerAnnotation
+  @CrossOrigin
   @PutMapping(value = "/api/reviews/{reviewId}")
   public ResponseDto<?> updateReview(@PathVariable Long reviewId, @RequestBody ReviewRequestDto reviewRequestDto,
       HttpServletRequest request) {

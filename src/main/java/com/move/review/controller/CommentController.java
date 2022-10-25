@@ -21,22 +21,21 @@ public class CommentController {
 
   // 댓글 작성
   @PostMapping(value = "/comments")
-  public ResponseDto<?> createComment(@RequestBody CommentRequestDto requestDto,
-                                      @AuthenticationPrincipal UserDetailsImpl userDetails){
-    return commentService.createComment(requestDto, userDetails);
+  public ResponseDto<?> createComment(@RequestBody CommentRequestDto requestDto, HttpServletRequest request){
+    return commentService.createComment(requestDto, request);
   }
 
   // 댓글 수정
   @PutMapping(value = "/comments/{commentId}")
   public ResponseDto<?> updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto requestDto,
-                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    return commentService.updateComment(commentId, requestDto, userDetails);
+                                      HttpServletRequest request) {
+    return commentService.updateComment(commentId, requestDto, request);
   }
 
   // 댓글 삭제
   @DeleteMapping(value = "/comment/{commentId}")
   public ResponseDto<?> deleteComment(@PathVariable Long commentId,
-                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    return commentService.deleteComment(commentId, userDetails);
+                                      @AuthenticationPrincipal HttpServletRequest request) {
+    return commentService.deleteComment(commentId, request);
   }
 }

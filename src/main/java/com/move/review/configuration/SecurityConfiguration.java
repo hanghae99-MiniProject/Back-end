@@ -61,8 +61,10 @@ public class SecurityConfiguration {
         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // 추가
         .antMatchers("/api/member/signup",
                 "/api/member/login",
-                "/api/member/id-check").permitAll()
-        .antMatchers("/api/post/**").permitAll()
+                "/api/member/id-check",
+                "/api/top-heart",
+                "/api/reviews").permitAll()
+        .antMatchers("/api/review/**").permitAll()
         .antMatchers("/api/comment/**").permitAll()
         .antMatchers( "/v2/api-docs",
                 "/swagger-resources",

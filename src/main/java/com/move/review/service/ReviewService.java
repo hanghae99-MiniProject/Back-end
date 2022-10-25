@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ReviewService {
 
-
     private final ReviewRepository reviewRepository;
     private final CommentRepository commentRepository;
     private final HeartRepository heartRepository;
