@@ -44,7 +44,6 @@ public class ReviewController {
 
   //Review 업데이트
   @SwaggerAnnotation
-  @CrossOrigin
   @PutMapping(value = "/api/reviews/{reviewId}")
   public ResponseDto<?> updateReview(@PathVariable Long reviewId, @RequestBody ReviewRequestDto reviewRequestDto,
       HttpServletRequest request) {

@@ -64,8 +64,8 @@ public class SecurityConfiguration {
                 "/api/member/id-check",
                 "/api/top-heart",
                 "/api/reviews").permitAll()
-        .antMatchers("/api/review/**").permitAll()
-        .antMatchers("/api/comment/**").permitAll()
+        .antMatchers("/api/reviews/**").permitAll()
+        .antMatchers("/api/comments/**").permitAll()
         .antMatchers( "/v2/api-docs",
                 "/swagger-resources",
                 "/swagger-resources/**",
