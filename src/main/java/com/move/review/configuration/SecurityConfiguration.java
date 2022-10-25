@@ -63,7 +63,8 @@ public class SecurityConfiguration {
                 "/api/member/login",
                 "/api/member/id-check",
                 "/api/top-heart",
-                "/api/reviews").permitAll()
+                "/api/reviews",
+                "/api/reviews/{reviewId}").permitAll()
         .antMatchers("/api/reviews/**").permitAll()
         .antMatchers("/api/comments/**").permitAll()
         .antMatchers( "/v2/api-docs",

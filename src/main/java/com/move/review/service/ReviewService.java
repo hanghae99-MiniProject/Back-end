@@ -71,7 +71,6 @@ public class ReviewService {
     //Review 세부 조회
     @Transactional(readOnly = true)
     public ResponseDto<?> getReview(Long id, UserDetailsImpl userDetails) {
-        Member member = userDetails.getMember();
         Review review = isPresentPost(id);
         if (null == review) {
             return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
@@ -84,12 +83,16 @@ public class ReviewService {
         Long heartNum = heartRepository.countByReview(review);
         // 댓글 갯수
         Long commentNum = commentRepository.countByReview(review);
-        // 하트 여부 조회
-        Optional<Heart> heart = heartRepository.findByMemberAndReview(member, review);
-        boolean heartYn = false;
 
-        if(heart.isPresent()) {
-            heartYn = true;
+        boolean heartYn = false;
+        if(userDetails != null) {
+            Member member = userDetails.getMember();
+            // 하트 여부 조회
+            Optional<Heart> heart = heartRepository.findByMemberAndReview(member, review);
+
+            if(heart.isPresent()) {
+                heartYn = true;
+            }
         }
 
         for (Comment comment : commentList) {
