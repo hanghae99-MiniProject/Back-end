@@ -16,11 +16,11 @@ public class Heart {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long heartId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="memberId")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="reviewId")
     private Review review;
 

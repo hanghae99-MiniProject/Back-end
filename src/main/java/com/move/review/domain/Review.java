@@ -1,6 +1,8 @@
 package com.move.review.domain;
 
 import com.move.review.controller.request.ReviewRequestDto;
+
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -62,8 +64,12 @@ public class Review extends Timestamped {
   private String memberName;
 
   // 댓글
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Comment> comments;
+  @OneToMany(mappedBy = "review", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Comment> comments = new ArrayList<>();
+
+  // 좋아요
+  @OneToMany(mappedBy = "review", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Heart> hearts = new ArrayList<>();
 
   public void update(ReviewRequestDto reviewRequestDto) {
     this.reviewTitle = reviewRequestDto.getReviewTitle();

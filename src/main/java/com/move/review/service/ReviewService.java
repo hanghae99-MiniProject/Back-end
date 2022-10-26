@@ -65,7 +65,28 @@ public class ReviewService {
     //전체 Review 조회
     @Transactional(readOnly = true)
     public ResponseDto<?> getAllReview() {
-        return ResponseDto.success(reviewRepository.findAllByOrderByModifiedAtDesc());
+        List<Review> reviewList = reviewRepository.findAllByOrderByModifiedAtDesc();
+
+        List<ReviewResponseDto> reviewResponseDtos = new ArrayList<>();
+        for (Review review : reviewList)  {
+            Long commentNum = commentRepository.countByReview(review);
+            Long heartNum = heartRepository.countByReview(review);
+            reviewResponseDtos.add(
+                    ReviewResponseDto.builder()
+                            .reviewId(review.getReviewId())
+                            .image(review.getImage())
+                            .movieTitle(review.getMovieTitle())
+                            .genre(review.getGenre())
+                            .rating(review.getRating())
+                            .reviewTitle(review.getReviewTitle())
+                            .reviewContent(review.getReviewContent())
+                            .memberName(review.getMemberName())
+                            .heartNum(heartNum)
+                            .commentNum(commentNum)
+                            .build()
+            );
+        }
+        return ResponseDto.success(reviewResponseDtos);
     }
 
     //Review 세부 조회
