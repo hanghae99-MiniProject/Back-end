@@ -15,7 +15,7 @@ public class HomeService {
         Long maxReivewId = heartRepository.heartMaxCount();
 
         if(maxReivewId == null) {
-            return Long.valueOf(3);
+            return Long.valueOf(0);
         }
          return maxReivewId;
     }

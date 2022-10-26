@@ -18,7 +18,6 @@ public class MemberController {
 
   private final MemberService memberService;
 
-  @CrossOrigin
   @PostMapping(value = "/api/member/signup")
   public ResponseDto<?> signup(@RequestBody MemberRequestDto requestDto) {
     return memberService.createMember(requestDto);

@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -63,9 +64,9 @@ public class SecurityConfiguration {
                 "/api/member/login",
                 "/api/member/id-check",
                 "/api/top-heart",
-                "/api/reviews",
+//                "/api/reviews",
                 "/api/reviews/{reviewId}").permitAll()
-        .antMatchers("/api/reviews/**").permitAll()
+        .antMatchers(HttpMethod.GET,"/api/reviews").permitAll()
         .antMatchers("/api/comments/**").permitAll()
         .antMatchers( "/v2/api-docs",
                 "/swagger-resources",
